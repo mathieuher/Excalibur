@@ -53,7 +53,7 @@ export class Fade implements Action {
   }
 
   public isComplete(): boolean {
-    return this._stopped || Math.abs(this._graphics.opacity - this._endOpacity) < 0.05;
+    return this._stopped || this._speed <= 0;
   }
 
   public stop(): void {

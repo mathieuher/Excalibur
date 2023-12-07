@@ -5,6 +5,7 @@ import { Font } from './Font';
 import { FontTextInstance } from './FontTextInstance';
 
 export class FontCache {
+  public static LIFETIME = 200;//ms
   private static _LOGGER = Logger.getInstance();
   private static _TEXT_USAGE = new Map<FontTextInstance, number>();
   private static _TEXT_CACHE = new Map<string, FontTextInstance>();
@@ -41,7 +42,7 @@ export class FontCache {
     const currentHashCodes = new Set<string>();
     for (const [textInstance, time] of FontCache._TEXT_USAGE.entries()) {
       // if bitmap hasn't been used in 100 ms clear it
-      if (time + 100 < performance.now()) {
+      if (time + FontCache.LIFETIME < performance.now()) {
         FontCache._LOGGER.debug(`Text cache entry timed out ${textInstance.text}`);
         deferred.push(textInstance);
         textInstance.dispose();
